@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "pawhub-app",
-    "slug": "pawhub-app",
+    "slug": "paw-hub",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9ea8973f-7c0f-4d85-b446-c6a53605c9e0"
+      }
+    },
+    "owner": "rundex0"
   }
 }
