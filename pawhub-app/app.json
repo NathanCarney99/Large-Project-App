@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "pawhub-app",
+    "name": "PawHub App",
     "slug": "paw-hub",
+    "description": "A social media for your pets",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/pawhub-logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/pawhub-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
