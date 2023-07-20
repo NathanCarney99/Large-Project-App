@@ -43,15 +43,17 @@ export default function MainContainer() {
                 name={iconName}
                 color={focused ? '#e57c23' : "white"}
                 size={size}
+                style={{ paddingTop: 8 }} // Adjust the padding top as desired
               />
             );
           },
           tabBarStyle: { backgroundColor: '#025464' },
           tabBarLabelStyle: {
-            fontSize: 18,
+            fontSize: 13,
             fontWeight: 'bold',
             color: '#fff',
-            marginTop: 4, // Optional: Adjust the vertical positioning of the text
+            paddingTop: 0,
+            marginTop: 3, // Optional: Adjust the vertical positioning of the text
           },
           headerStyle: { backgroundColor: '#025464' },
           headerTitleStyle: { color: '#fff' },
