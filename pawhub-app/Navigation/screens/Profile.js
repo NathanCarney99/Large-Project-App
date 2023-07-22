@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker'; // Import Expo ImagePicker
 
 const ProfileCard = () => {
   const [email, setEmail] = useState("");
@@ -23,18 +23,26 @@ const ProfileCard = () => {
     Keyboard.dismiss();
   };
 
-  const handleProfilePicturePress = () => {
+  const handleProfilePicturePress = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync(); // Request gallery permission
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access the gallery is required!');
+      return;
+    }
+
     const options = {
-      mediaType: 'photo',
-      maxWidth: 300,
-      maxHeight: 300,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images, // mediaType is deprecated, use mediaTypes instead
+      allowsEditing: true, // Allow the user to crop the image
+      aspect: [1, 1], // The aspect ratio of the cropped image (square in this case)
+      quality: 1, // Image quality
     };
 
-    ImagePickerlaunchImageLibrary(options, (response) => {
-      if (response.uri) {
-        setProfilePicture(response.uri);
-      }
-    });
+    const result = await ImagePicker.launchImageLibraryAsync(options);
+
+    if (!result.cancelled) {
+      setProfilePicture(result.uri);
+    }
   };
 
   return (
