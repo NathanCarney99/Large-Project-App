@@ -20,32 +20,32 @@ const Contact = () => {
     {
       name: 'Jesus',
       role: 'Front End',
-      linkedin: 'https://www.linkedin.com/linkedin-jesus',
-      image: require('../images/DarthDogus.png'),
+      linkedin: 'https://www.linkedin.com/in/jesus-carballosaa-925729283/',
+      image: require('../images/Nathan.jpg'),
     },
     {
       name: 'Brandon',
       role: 'Project Manager',
       linkedin: 'https://www.linkedin.com/in/brandon-holtzman-22155b1b7/',
-      image: require('../images/Brandon.jpg'),
+      image: require('../images/Brandon.jpeg'),
     },
     {
       name: 'Stephen',
       role: 'Database',
-      linkedin: 'https://www.linkedin.com/linkedin-brandon',
-      image: require('../images/Meow.jpg'),
+      linkedin: 'https://app.podiumx.com/u/846522fa-6e36-4f73-892b-d40fce8fcf0d',
+      image: require('../images/Stephen.png'),
     },
     {
       name: 'Nathan',
       role: 'Front End',
       linkedin: 'https://www.linkedin.com/in/nathan-carney-0633b2220/',
-      image: require('../images/Angery.png'),
+      image: require('../images/Nathan.jpg'),
     },
     {
       name: 'Parker',
       role: 'API',
       linkedin: 'https://www.linkedin.com/in/parker-mcleod',
-      image: require('../images/Pug.jpg'),
+      image: require('../images/Parker.jpg'),
     }
   ];
 
@@ -74,9 +74,16 @@ const Contact = () => {
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{developer.name}</Text>
               <Text style={styles.role}>{developer.role}</Text>
-              <TouchableOpacity onPress={() => handleLinkedInLink(developer.linkedin)}>
-                <Text style={styles.linkedin}>LinkedIn</Text>
-              </TouchableOpacity>
+              {/* Conditional rendering based on the developer's name */}
+              {developer.name === 'Stephen' ? (
+                <TouchableOpacity onPress={() => handleLinkedInLink(developer.linkedin)}>
+                  <Text style={styles.linkedin}>PodiumX</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => handleLinkedInLink(developer.linkedin)}>
+                  <Text style={styles.linkedin}>LinkedIn</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         ))}
@@ -84,6 +91,10 @@ const Contact = () => {
     </View>
   );
 };
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {
