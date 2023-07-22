@@ -8,11 +8,11 @@ const Contact = () => {
   };
 
   const handleWebsiteGitHubLink = () => {
-    Linking.openURL('https://www.github.com/your-website-github-link');
+    Linking.openURL('https://github.com/ParkerCMcLeod/Large-Project');
   };
 
   const handleAppGitHubLink = () => {
-    Linking.openURL('https://www.github.com/your-app-github-link');
+    Linking.openURL('https://github.com/rundex0/Large-Project-App');
   };
 
   // Developer data
