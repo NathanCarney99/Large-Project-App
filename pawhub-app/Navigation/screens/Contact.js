@@ -21,7 +21,7 @@ const Contact = () => {
       name: 'Jesus',
       role: 'Front End',
       linkedin: 'https://www.linkedin.com/in/jesus-carballosaa-925729283/',
-      image: require('../images/Nathan.jpg'),
+      image: require('../images/Jesus.jpg'),
     },
     {
       name: 'Brandon',
