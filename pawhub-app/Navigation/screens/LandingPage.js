@@ -46,12 +46,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 8,
     marginBottom: 20,
+    width: 145,
+    textAlign: 'center'
   },
   signupButton: {
     backgroundColor: '#e57c23',
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 8,
+    width: 145,
+    textAlign: 'center'
   },
   buttonText: {
     color: '#fff',
