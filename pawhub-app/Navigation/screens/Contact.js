@@ -52,6 +52,8 @@ const Contact = () => {
   return (
     <View style={styles.container}>
     <View style={styles.titleHolderGithub}>
+    {/* <Image source={require('../images/github.jpg')} style={styles.githubImage} /> */}
+
         {/* Website GitHub */}
         <TouchableOpacity onPress={handleWebsiteGitHubLink}>
           <Text style={styles.titleGithub}>Website GitHub</Text>
@@ -97,6 +99,15 @@ const Contact = () => {
 
 
 const styles = StyleSheet.create({
+  titleHolderGithub: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  githubImage: {
+    width: 100, // Set the width of the image
+    height: 100, // Set the height of the image
+    backgroundColor: '#fff'
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

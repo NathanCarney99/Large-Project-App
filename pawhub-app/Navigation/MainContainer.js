@@ -92,7 +92,10 @@ const MainContainer = () => {
                     />
                   );
                 },
-                tabBarStyle: { backgroundColor: '#025464' },
+                tabBarStyle: { elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
+      backgroundColor: '#025464', },
                 tabBarLabelStyle: {
                   fontSize: 13,
                   fontWeight: 'bold',
