@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 
 const SignupScreen = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -20,47 +20,52 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.inputLabel}>Name</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your full name"
-        value={name}
-        onChangeText={setName}
-      />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.formContainer}>
+        <Text style={styles.inputLabel}>Name</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your full name"
+          value={name}
+          onChangeText={setName}
+        />
 
-      <Text style={styles.inputLabel}>Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your desired email"
-        value={email}
-        onChangeText={setEmail}
-      />
+        <Text style={styles.inputLabel}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your desired email"
+          value={email}
+          onChangeText={setEmail}
+        />
 
-      {/* Username Input */}
-      <Text style={styles.inputLabel}>Username</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your desired username"
-        value={username}
-        onChangeText={setUsername}
-      />
+        {/* Username Input */}
+        <Text style={styles.inputLabel}>Username</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your desired username"
+          value={username}
+          onChangeText={setUsername}
+        />
 
-      {/* Password Input */}
-      <Text style={styles.inputLabel}>Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your desired password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+        {/* Password Input */}
+        <Text style={styles.inputLabel}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your desired password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
-      {/* Signup Button */}
-      <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Signup</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Signup Button */}
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+          <Text style={styles.buttonText}>Signup</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -71,6 +76,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#025464',
   },
+  formContainer: {
+    width: '80%',
+    alignItems: 'center',
+  },
   inputLabel: {
     color: '#fff',
     fontSize: 18,
@@ -78,15 +87,15 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    width: '80%',
+    width: '100%',
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
-    color: '#000', // Change text color to black
-    backgroundColor: 'white', // Set the background color to white
+    color: '#000',
+    backgroundColor: 'white',
   },
   signupButton: {
     backgroundColor: '#e57c23',

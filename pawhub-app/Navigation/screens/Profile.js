@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Image, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Import Expo ImagePicker
 
 const ProfileCard = ({ navigation }) => {
@@ -59,12 +59,12 @@ const ProfileCard = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      <TouchableWithoutFeedback onPress={handleOutsidePress}>
-        <View style={styles.profileContainer}>
+      <KeyboardAvoidingView
+        style={styles.profileContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+      >
+        <TouchableWithoutFeedback onPress={handleOutsidePress}>
           <View style={styles.profileInner}>
-
-
-
             <TouchableOpacity onPress={handleProfilePicturePress}>
               <View style={styles.profilePictureContainer}>
                 {profilePicture ? (
@@ -119,17 +119,14 @@ const ProfileCard = ({ navigation }) => {
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
               <Text style={styles.logoutButtonText}>Logout</Text>
             </TouchableOpacity>
-
-
           </View>
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-
   scrollViewContainer: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -141,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
   },
   profileInner: {
     backgroundColor: '#f0f0f0',
@@ -196,6 +193,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default ProfileCard;
