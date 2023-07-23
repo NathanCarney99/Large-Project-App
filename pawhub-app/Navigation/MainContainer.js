@@ -47,14 +47,25 @@ const MainContainer = () => {
         </Stack.Screen>
         
         {/* Stack.Screen for LoginScreen */}
-        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: null, headerShown: true, title: '', headerStyle: {elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0, backgroundColor: '#025464' }, headerTintColor: 'white' }} />
         {/* Stack.Screen for SignupScreen */}
-        <Stack.Screen name="SignupScreen" component={SignupScreen} options={{ headerShown: true }} />
-
-     
+        <Stack.Screen name="SignupScreen" component={SignupScreen} options={{ headerTitle: null, headerShown: true, title: '', headerStyle: {elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0, backgroundColor: '#025464' }, headerTintColor: 'white' }} />
 
         {/* Stack.Screen for the bottom tab navigator */}
-        <Stack.Screen name="MainContainer" options={{ headerShown: false }}>
+        <Stack.Screen
+          name="MainContainer"
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#025464', // Set the header background color to blue
+            },
+            headerTintColor: 'white', // Set the header text color to white
+          }}
+        >
           {() => (
             <Tab.Navigator
               initialRouteName={homeName}
@@ -89,14 +100,48 @@ const MainContainer = () => {
                   paddingTop: 0,
                   marginTop: 3,
                 },
-                headerStyle: { backgroundColor: '#025464' },
-                headerTitleStyle: { color: '#fff' },
               })}
             >
-              <Tab.Screen name={homeName} component={Home} />
-              <Tab.Screen name={profileName} component={Profile} />
-              <Tab.Screen name={contactName} component={Contact} />
-              <Tab.Screen name={aboutName} component={About} />
+              {/* Individual Tab Screens */}
+              <Tab.Screen
+  name={homeName}
+  component={Home}
+  options={{
+    headerShown: true,
+    headerStyle: { backgroundColor: '#025464' },
+    headerTintColor: 'white', // Set the header title color to white
+  }}
+/>
+
+<Tab.Screen
+  name={profileName}
+  component={Profile}
+  options={{
+    headerShown: true,
+    headerStyle: { backgroundColor: '#025464' },
+    headerTintColor: 'white', // Set the header title color to white
+  }}
+/>
+
+<Tab.Screen
+  name={contactName}
+  component={Contact}
+  options={{
+    headerShown: true,
+    headerStyle: { backgroundColor: '#025464' },
+    headerTintColor: 'white', // Set the header title color to white
+  }}
+/>
+
+<Tab.Screen
+  name={aboutName}
+  component={About}
+  options={{
+    headerShown: true,
+    headerStyle: { backgroundColor: '#025464',  },
+    headerTintColor: 'white', // Set the header title color to white
+  }}
+/>
             </Tab.Navigator>
           )}
         </Stack.Screen>

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Image, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Import Expo ImagePicker
 
-const ProfileCard = () => {
+const ProfileCard = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -22,6 +22,18 @@ const ProfileCard = () => {
     // Blur the input fields when clicking outside of them
     Keyboard.dismiss();
   };
+
+  const handleLogout = () => {
+    // Clear any session data or cookies here
+    // For now, let's just reset the state and navigate back to the LandingPage
+    setEmail("");
+    setPassword("");
+    setName("");
+    setUserName("");
+    setProfilePicture(null);
+    navigation.navigate('LandingPage');
+  };
+
 
   const handleProfilePicturePress = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync(); // Request gallery permission
@@ -46,73 +58,92 @@ const ProfileCard = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleOutsidePress}>
-      <View style={styles.profileContainer}>
-        <View style={styles.profileInner}>
-          <TouchableOpacity onPress={handleProfilePicturePress}>
-            <View style={styles.profilePictureContainer}>
-              {profilePicture ? (
-                <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
-              ) : (
-                <Image source={require('../images/defaultPic.jpg')} style={styles.profilePicture} />
-              )}
-            </View>
-          </TouchableOpacity>
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <TouchableWithoutFeedback onPress={handleOutsidePress}>
+        <View style={styles.profileContainer}>
+          <View style={styles.profileInner}>
 
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            ref={nameInputRef}
-            style={[styles.input, styles.tallerInput]}
-            placeholder="Full Name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
 
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            ref={emailInputRef}
-            style={[styles.input, styles.tallerInput]}
-            placeholder="youremail@gmail.com"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
 
-          <Text style={styles.label}>Username</Text>
-          <TextInput
-            ref={usernameInputRef}
-            style={[styles.input, styles.tallerInput]}
-            placeholder="LiL_PuG"
-            value={username}
-            onChangeText={(text) => setUserName(text)}
-          />
+            <TouchableOpacity onPress={handleProfilePicturePress}>
+              <View style={styles.profilePictureContainer}>
+                {profilePicture ? (
+                  <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
+                ) : (
+                  <Image source={require('../images/defaultPic.jpg')} style={styles.profilePicture} />
+                )}
+              </View>
+            </TouchableOpacity>
 
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            ref={passwordInputRef}
-            style={[styles.input, styles.tallerInput]}
-            placeholder="********"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              ref={nameInputRef}
+              style={[styles.input, styles.tallerInput]}
+              placeholder="Full Name"
+              value={name}
+              onChangeText={(text) => setName(text)}
+            />
 
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Edit</Text>
-          </TouchableOpacity>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              ref={emailInputRef}
+              style={[styles.input, styles.tallerInput]}
+              placeholder="youremail@gmail.com"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+
+            <Text style={styles.label}>Username</Text>
+            <TextInput
+              ref={usernameInputRef}
+              style={[styles.input, styles.tallerInput]}
+              placeholder="LiL_PuG"
+              value={username}
+              onChangeText={(text) => setUserName(text)}
+            />
+
+            <Text style={styles.label}>Password</Text>
+            <TextInput
+              ref={passwordInputRef}
+              style={[styles.input, styles.tallerInput]}
+              placeholder="********"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Edit</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+              <Text style={styles.logoutButtonText}>Logout</Text>
+            </TouchableOpacity>
+
+
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    padding: 0, // Set inner padding to 0
+  },
   profileContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%'
   },
   profileInner: {
-    padding: 20,
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
     width: '80%',
@@ -151,6 +182,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
   },
+  logoutButton: {
+    backgroundColor: '#e57c23',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
 });
+
 
 export default ProfileCard;

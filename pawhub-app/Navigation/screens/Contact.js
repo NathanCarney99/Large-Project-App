@@ -27,7 +27,7 @@ const Contact = () => {
       name: 'Brandon',
       role: 'Project Manager',
       linkedin: 'https://www.linkedin.com/in/brandon-holtzman-22155b1b7/',
-      image: require('../images/Brandon.jpeg'),
+      image: require('../images/Brandon.png'),
     },
     {
       name: 'Stephen',
