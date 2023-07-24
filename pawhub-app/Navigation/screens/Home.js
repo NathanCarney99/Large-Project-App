@@ -1,10 +1,15 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, ScrollView } from 'react-native'
+import React from 'react';
+import NewPost from './NewPost';
+import PostCard from './PostCard';
 
 export default function Home({navigation}) {
   return (
-    <View>
-      
-    </View>
-  )
+    <ScrollView>
+      <View>
+        <NewPost />
+        <PostCard />
+      </View>
+    </ScrollView>
+  );
 }
