@@ -13,6 +13,8 @@ import About from './screens/About';
 import LandingPage from './screens/LandingPage';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
+import SearchBar from './screens/SearchBar'; // Import the SearchBar component
+
 
 // Screen Names
 const homeName = 'Home';
@@ -120,6 +122,27 @@ const MainContainer = () => {
   name={profileName}
   component={Profile}
   options={{
+    headerShown: true,
+    headerStyle: { backgroundColor: '#025464' },
+    headerTintColor: 'white', // Set the header title color to white
+  }}
+/>
+
+
+<Tab.Screen
+  name="SearchBar"
+  component={SearchBar}
+  options={{
+    tabBarLabel: 'Search', // Set the label for the tab
+    tabBarIcon: ({ focused, color, size }) => (
+      // Use the Ionicons component to display the search icon
+      <Ionicons
+        name={focused ? 'search' : 'search-outline'}
+        color={focused ? '#e57c23' : 'white'}
+        size={size}
+        style={{ paddingTop: 8 }}
+      />
+    ),
     headerShown: true,
     headerStyle: { backgroundColor: '#025464' },
     headerTintColor: 'white', // Set the header title color to white

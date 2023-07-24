@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         marginLeft: 80,
         marginTop: 30,
         color: '#fff',
+        fontWeight: 'bold'
     },
     postCardText: {
         flex: 1,
