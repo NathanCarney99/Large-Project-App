@@ -1,17 +1,16 @@
-import React, { useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 function NewPost() {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
 
+  
+
+
+
+  
   const handleAddPost = () => {
     // Perform any necessary actions with the entered text and images
     console.log("New post added:", text);
@@ -19,92 +18,94 @@ function NewPost() {
     setText("");
     setImages([]);
   };
+const handleImageChange = async () => {
+  const result = await getImageFromGallery(true); // Pass true for allowsMultipleSelection
+  if (!result.cancelled) {
+    setImages(result.uris);
+  }
+};
 
-  const handleImageChange = async () => {
+  const getImageFromGallery = async (allowsMultipleSelection) => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
       alert("Permission to access media library is required!");
-      return;
+      return { cancelled: true };
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const options = {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      allowsMultipleSelection: true,
+      allowsMultipleSelection,
       quality: 1,
-    });
+    };
 
-    if (!result.cancelled) {
-      setImages(result.uris);
-    }
+    return ImagePicker.launchImageLibraryAsync(options);
   };
 
   return (
     <View style={styles.screenContainer}>
-    <View style={styles.container}>
-      <View style={styles.inner}>
-        <TextInput
-          style={styles.text}
-          value={text}
-          onChangeText={(value) => setText(value)}
-          placeholder='Enter your post...'
-          multiline
-        />
+      <View style={styles.container}>
+        <View style={styles.inner}>
+          <TextInput
+            style={styles.text}
+            value={text}
+            onChangeText={(value) => setText(value)}
+            placeholder='Enter your post...'
+            multiline
+          />
 
-        <TouchableOpacity
-          style={styles.chooseFileButton}
-          onPress={handleImageChange}
-        >
-          <Text style={styles.chooseFileText}>Choose File</Text>
-        </TouchableOpacity>
+          <View style={styles.alignButtons}>
+            <TouchableOpacity
+              style={styles.chooseFileButton}
+              onPress={() => handleImageChange()}
+            >
+              <Text style={styles.chooseFileText}>Choose File</Text>
+            </TouchableOpacity>
 
-        {images.length > 0 && (
-          <View style={styles.imageContainer}>
-            {images.map((image, index) => (
-              <Image
-                key={index}
-                source={{ uri: image }}
-                style={styles.image}
-              />
-            ))}
+            {images.length > 0 && (
+              <View style={styles.imageContainer}>
+                {images.map((image, index) => (
+                  <Image
+                    key={index}
+                    source={{ uri: image }}
+                    style={styles.image}
+                  />
+                ))}
+              </View>
+            )}
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleAddPost}
+            >
+              <Text style={styles.buttonText}>Add Post</Text>
+            </TouchableOpacity>
           </View>
-        )}
-
-        <View style={styles.buttons}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleAddPost}
-          >
-            <Text style={styles.buttonText}>Add Post</Text>
-          </TouchableOpacity>
         </View>
-
-
-      </View>
       </View>
     </View>
   );
 }
-
 const styles = {
-    screenContainer: {
-        flex: 1,
-        justifyContent: 'center', // Center vertically
-        backgroundColor: 'white',
-        alignItems: 'center',
-      },
-  container: {
+  alignButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  screenContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  container: {
     padding: 10,
-    backgroundColor: '#e57c23', // Add orange background color here
+    backgroundColor: '#e57c23',
     paddingHorizontal: 10,
     alignItems: 'center',
-    width: 350,
-    borderRadius: 60
+    width: '100%',
+    borderRadius: 40,
   },
-  inner: {
-    flex: 1,
-  },
+ 
   text: {
     height: 50,
     borderColor: '#fff',
@@ -112,14 +113,16 @@ const styles = {
     marginBottom: 10,
     paddingHorizontal: 10,
     backgroundColor: 'white',
-    borderRadius: 60,
-    width: 260
+    borderRadius: 40,
+    width: 280,
   },
   chooseFileButton: {
     backgroundColor: '#025464',
     padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 70, // Make it a circle by setting borderRadius to half of width (140/2)
+    width: 140,
+    alignItems: 'center', // Center text inside the circle
+    justifyContent: 'center',
   },
   chooseFileText: {
     color: 'white',
@@ -136,13 +139,16 @@ const styles = {
   },
   buttons: {
     flexDirection: 'row',
+    width: 140,
   },
   button: {
-    flex: 1,
     backgroundColor: '#025464',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 70, // Make it a circle by setting borderRadius to half of width (140/2)
     marginHorizontal: 5,
+    width: 140,
+    alignItems: 'center', // Center text inside the circle
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',

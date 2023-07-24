@@ -106,9 +106,9 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         color: 'black',
-        wordWrap: 'wrap',
+        flexWrap: 'wrap',
         backgroundColor: '#fff',
-        borderRadius: 20,
+        borderRadius: 10,
         fontSize: 16,
     },
     postCardTextInputContainer: {

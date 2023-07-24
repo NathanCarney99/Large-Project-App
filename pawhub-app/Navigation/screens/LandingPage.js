@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', // Center content horizontally
     backgroundColor: '#025464',
   },
   logo: {
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 20,
     width: 145,
-    textAlign: 'center'
   },
   signupButton: {
     backgroundColor: '#e57c23',
@@ -55,12 +54,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 8,
     width: 145,
-    textAlign: 'center'
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center'
   },
 });
 
