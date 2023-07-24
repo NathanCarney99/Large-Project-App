@@ -113,7 +113,9 @@ const MainContainer = () => {
   component={Home}
   options={{
     headerShown: true,
-    headerStyle: { backgroundColor: '#025464' },
+    headerStyle: {backgroundColor: '#025464', elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0  },
     headerTintColor: 'white', // Set the header title color to white
   }}
 />
@@ -123,7 +125,9 @@ const MainContainer = () => {
   component={Profile}
   options={{
     headerShown: true,
-    headerStyle: { backgroundColor: '#025464' },
+    headerStyle: { backgroundColor: '#025464', elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0  },
     headerTintColor: 'white', // Set the header title color to white
   }}
 />
@@ -144,7 +148,9 @@ const MainContainer = () => {
       />
     ),
     headerShown: true,
-    headerStyle: { backgroundColor: '#025464' },
+    headerStyle: { backgroundColor: '#025464', elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0  },
     headerTintColor: 'white', // Set the header title color to white
   }}
 />
@@ -154,7 +160,9 @@ const MainContainer = () => {
   component={Contact}
   options={{
     headerShown: true,
-    headerStyle: { backgroundColor: '#025464' },
+    headerStyle: { backgroundColor: '#025464', elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0  },
     headerTintColor: 'white', // Set the header title color to white
   }}
 />
@@ -164,7 +172,9 @@ const MainContainer = () => {
   component={About}
   options={{
     headerShown: true,
-    headerStyle: { backgroundColor: '#025464',  },
+    headerStyle: { backgroundColor: '#025464', elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0   },
     headerTintColor: 'white', // Set the header title color to white
   }}
 />

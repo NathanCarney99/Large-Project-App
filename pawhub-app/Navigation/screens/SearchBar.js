@@ -58,52 +58,53 @@ const SearchBar = () => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.searchBar}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for users..."
-            value={searchTerm}
-            onChangeText={handleInputChange}
-          />
-          {searchTerm ? (
-            <TouchableOpacity style={styles.clearButton} onPress={handleClearSearchTerm}>
-              <Ionicons name="close" size={24} color="#025464" />
-            </TouchableOpacity>
-          ) : null}
-          {searchTerm && (
-            <View style={styles.searchOverlay}>
-              <FlatList
-                data={searchResults}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
-          )}
+    <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.searchBar}>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search for users..."
+              value={searchTerm}
+              onChangeText={handleInputChange}
+            />
+            {searchTerm ? (
+              <TouchableOpacity style={styles.clearButton} onPress={handleClearSearchTerm}>
+                <Ionicons name="close" size={24} color="#025464" />
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      {searchTerm && (
+        <FlatList
+          data={searchResults}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={styles.searchResultsContainer} // Apply the custom width style here
+        />
+      )}
+    </View>
   );
 };
 
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   searchBar: {
     backgroundColor: 'white',
-    borderRadius: 60
+    borderRadius: 60,
+    padding: 10,
   },
   searchContainer: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
-    position: 'relative',
-    flexDirection: 'row'
   },
   searchInput: {
     flex: 1,
     height: 40,
     fontSize: 16,
-    padding: 8,
     marginLeft: 10,
     borderRadius: 15,
     fontSize: 18,
@@ -112,19 +113,14 @@ const styles = StyleSheet.create({
   clearButton: {
     padding: 5,
     marginRight: 10,
-   
   },
-  searchOverlay: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    width: '100%',
-    zIndex: 2,
-    marginTop: 5,
-    paddingHorizontal: 80,
+  searchResultsContainer: {
+    paddingHorizontal: 20, // Set the horizontal padding to control the width
+    
   },
   searchResult: {
     marginBottom: 5,
+    marginTop: 5,
     padding: 10,
     backgroundColor: 'white',
     borderRadius: 15,
