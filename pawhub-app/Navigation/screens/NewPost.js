@@ -95,15 +95,15 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
   },
   container: {
     padding: 10,
-    backgroundColor: '#e57c23',
+    backgroundColor: '#025464',
     paddingHorizontal: 10,
     alignItems: 'center',
     width: '100%',
-    borderRadius: 40,
+    borderBottomLeftRadius: 40,
+  borderBottomRightRadius: 40,
   },
  
   text: {
@@ -117,7 +117,7 @@ const styles = {
     width: 280,
   },
   chooseFileButton: {
-    backgroundColor: '#025464',
+    backgroundColor: '#e57c23',
     padding: 10,
     borderRadius: 70, // Make it a circle by setting borderRadius to half of width (140/2)
     width: 140,
@@ -142,7 +142,7 @@ const styles = {
     width: 140,
   },
   button: {
-    backgroundColor: '#025464',
+    backgroundColor: '#e57c23',
     padding: 10,
     borderRadius: 70, // Make it a circle by setting borderRadius to half of width (140/2)
     marginHorizontal: 5,
