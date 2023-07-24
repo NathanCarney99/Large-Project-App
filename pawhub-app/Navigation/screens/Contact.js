@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#025464',
     borderRadius: 15,
     padding: 10,
   },
@@ -167,13 +167,16 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'white'
   },
   role: {
     fontSize: 16,
+    color: 'white'
   },
   linkedin: {
     fontSize: 16,
-    color: 'blue',
+    color: '#e57c23',
+    fontWeight: 'bold'
   },
 });
 

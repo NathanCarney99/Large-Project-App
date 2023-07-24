@@ -92,10 +92,12 @@ const SearchBar = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#025464'
   },
   searchBar: {
     backgroundColor: 'white',
-    borderRadius: 60,
+    borderRadius: 30,
+  
     padding: 10,
   },
   searchContainer: {

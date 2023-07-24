@@ -113,7 +113,7 @@ const styles = {
     marginBottom: 10,
     paddingHorizontal: 10,
     backgroundColor: 'white',
-    borderRadius: 40,
+    borderRadius: 10,
     width: 280,
   },
   chooseFileButton: {

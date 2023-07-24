@@ -58,6 +58,7 @@ const ProfileCard = ({ navigation }) => {
   };
 
   return (
+    
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <KeyboardAvoidingView
         style={styles.profileContainer}
@@ -123,40 +124,49 @@ const ProfileCard = ({ navigation }) => {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </ScrollView>
+    
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#025464', // Set the background color to blue
+  },
   scrollViewContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    padding: 0, // Set inner padding to 0
+    padding: 0,
+    backgroundColor: '#025464', // Set inner padding to 0
   },
   profileContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    backgroundColor: '#025464',
   },
   profileInner: {
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
     width: '80%',
+    backgroundColor: '#025464',
   },
   profilePictureContainer: {
     alignItems: 'center',
     marginBottom: 10,
   },
   profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 140,
+    height: 140,
+    borderRadius: 100,
   },
   label: {
     fontSize: 24,
     marginBottom: 5,
+    color: 'white'
   },
   input: {
     borderWidth: 1,
@@ -165,19 +175,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     fontSize: 18,
+    backgroundColor: 'white'
   },
   tallerInput: {
     height: 50,
   },
   button: {
-    backgroundColor: '#025464',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: '#025464',
     fontSize: 24,
+    fontWeight: 'bold',
   },
   logoutButton: {
     backgroundColor: '#e57c23',
@@ -185,7 +197,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 15,
   },
   logoutButtonText: {
     color: 'white',
