@@ -1,12 +1,13 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vector-icons
 import NewPost from './NewPost';
 import PostCard from './PostCard';
 
 export default function Home({ navigation }) {
   const handleSearchUsers = () => {
     // Handle navigation to the search users screen here
-    // For example, you can use the navigation prop to navigate to the SearchUsers component:
+    // For example, you can use the navigation prop to navigate to the SearchBar component:
     navigation.navigate('SearchBar');
   };
 
@@ -14,14 +15,12 @@ export default function Home({ navigation }) {
     <ScrollView>
       <View style={styles.blackContainer}>
         <TouchableOpacity onPress={handleSearchUsers}>
-
           <View style={styles.searchContainer}>
-
+            {/* Add the Ionicons component to display the search icon */}
+            <Ionicons name="search" size={24} color="#025464" style={styles.searchIcon} />
             <Text style={styles.searchButton}>Search Users</Text>
-
           </View>
         </TouchableOpacity>
-
       </View>
 
       <View>
@@ -44,6 +43,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 60,
     margin: 10,
+    flexDirection: 'row', // Add flexDirection: 'row' to align icon and text horizontally
+  },
+  searchIcon: {
+    marginRight: 5, // Adjust the margin between the icon and text
   },
   searchButton: {
     color: '#025464',

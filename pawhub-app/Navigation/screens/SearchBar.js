@@ -62,6 +62,7 @@ const SearchBar = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.searchBar}>
           <View style={styles.searchContainer}>
+            <Ionicons name="search" size={24} color="#025464" style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
               placeholder="Search for users..."
@@ -101,11 +102,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  searchIcon: {
+    marginRight: 10,
+ 
+  },
   searchInput: {
     flex: 1,
     height: 40,
     fontSize: 16,
-    marginLeft: 10,
+    marginLeft: 5, // Adjusted the margin for icon alignment
     borderRadius: 15,
     fontSize: 18,
     color: 'black',
@@ -116,7 +121,6 @@ const styles = StyleSheet.create({
   },
   searchResultsContainer: {
     paddingHorizontal: 20, // Set the horizontal padding to control the width
-    
   },
   searchResult: {
     marginBottom: 5,
