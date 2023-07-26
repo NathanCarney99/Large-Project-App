@@ -1,15 +1,45 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from 'react-native';
+
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorValue, setErrorValue] = useState('');
 
-  const handleLogin = () => {
-    // Implement your login logic here
-    // For now, we'll assume any non-empty input leads to successful login
-    // Always navigate to MainContainer upon pressing the login button
-    navigation.replace('MainContainer');
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('YOUR_API_ENDPOINT/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // API login success
+        navigation.replace('MainContainer');
+      } else {
+        // API login failed, show error message
+        setErrorValue(data.message); // Update the error message received from the API
+      }
+    } catch (error) {
+      // Handle any network or other errors
+      setErrorValue('Error occurred during login');
+      console.error('Error occurred during login:', error);
+    }
   };
 
   return (
@@ -19,13 +49,13 @@ const LoginScreen = ({ navigation }) => {
     >
       <View style={styles.formContainer}>
         {/* Username Input */}
-        <Text style={styles.inputLabel}>Username</Text>
+        <Text style={styles.inputLabel}>Email</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Enter your username"
-          value={username}
-          onChangeText={setUsername}
-        />
+      style={styles.input}
+      placeholder="Enter your email"
+      value={email}
+      onChangeText={setEmail}
+    />
 
         {/* Password Input */}
         <Text style={styles.inputLabel}>Password</Text>
