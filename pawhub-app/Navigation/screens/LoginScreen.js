@@ -16,24 +16,58 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [errorValue, setErrorValue] = useState('');
 
-  const handleLogin = async () => {
+
+  const searchUsersReturnUsers = async (query) => {
     try {
-      const response = await fetch('YOUR_API_ENDPOINT/login', {
-        method: 'POST',
+      const queryString = Object.keys(query)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+        .join('&');
+  
+      const url = `http://localhost:3001/api/searchUsersReturnUsers?${queryString}`;
+  
+      const response = await fetch(url, {
+        method: 'GET',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
       });
-
+  
+      if (!response.ok) {
+        throw new Error('Failed to search data');
+      }
+  
       const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Failed to search data', error);
+      return null;
+    }
+  };
+  
 
-      if (response.ok) {
-        // API login success
-        navigation.replace('MainContainer');
+  const handleLogin = async () => {
+    try {
+      let query = { email, password };
+      console.log(query);
+  
+      let currentUser = await searchUsersReturnUsers(query);
+      console.log('API Response:', currentUser);
+
+
+      if (!response.ok) {
+        const responseBody = await response.text();
+        console.error('API Error:', response.status, responseBody);
+        throw new Error('Failed to search data');
+      }
+  
+      if (currentUser === null) {
+        console.log('InvalidLogin');
+        setErrorValue('Invalid Email or password');
       } else {
-        // API login failed, show error message
-        setErrorValue(data.message); // Update the error message received from the API
+        console.log('Login success:', currentUser);
+        // Use React Navigation to navigate to the 'MainContainer' screen
+        navigation.replace('MainContainer');
       }
     } catch (error) {
       // Handle any network or other errors
@@ -41,6 +75,7 @@ const LoginScreen = ({ navigation }) => {
       console.error('Error occurred during login:', error);
     }
   };
+
 
   return (
     <KeyboardAvoidingView
@@ -67,10 +102,13 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={setPassword}
         />
 
+
         {/* Login Button */}
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
+
+        <Text style={styles.errorText}>{errorValue}</Text>
       </View>
     </KeyboardAvoidingView>
   );
@@ -86,6 +124,13 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '80%',
     alignItems: 'center',
+  },
+
+  errorText: {
+    color: 'white', // Set the color to white
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10, // Add some margin to separate it from the login button
   },
   inputLabel: {
     color: '#fff',
