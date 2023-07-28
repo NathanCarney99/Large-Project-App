@@ -23,7 +23,7 @@ const LoginScreen = ({ navigation }) => {
         .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
         .join('&');
   
-      const url = `http://localhost:3001/api/searchUsersReturnUsers?${queryString}`;
+      const url = `http://pawhub.space/api/searchUsersReturnUsers?${queryString}`;
   
       const response = await fetch(url, {
         method: 'GET',
@@ -55,11 +55,7 @@ const LoginScreen = ({ navigation }) => {
       console.log('API Response:', currentUser);
 
 
-      if (!response.ok) {
-        const responseBody = await response.text();
-        console.error('API Error:', response.status, responseBody);
-        throw new Error('Failed to search data');
-      }
+     
   
       if (currentUser === null) {
         console.log('InvalidLogin');
