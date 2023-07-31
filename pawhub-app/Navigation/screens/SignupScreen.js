@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 const SignupScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
   const delay = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
-  const [successMessage, setSuccessMessage] = useState('');
 
+  const searchUsersReturnUsers = async (query) => {
+    try {
+      const queryString = Object.keys(query)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+        .join('&');
+
+      const url = `http://pawhub.space/api/searchUsersReturnUsers?${queryString}`;
+
+      console.log('API URL:', url); // Debug: Log the API URL being called
+
+      const response = await axios.get(url);
+
+      console.log('API Response:', response.data); // Debug: Log the API response
+
+      return response.data;
+    } catch (error) {
+      console.error('Failed to search data', error);
+      return null;
+    }
+  };
 
   const addNewUser = async (newUser) => {
     try {
-      let response = await axios.post('http://pawhub.space/api/addNewUser', newUser);
+      console.log('Adding new user:', newUser); // Debug: Log the new user data before sending the request
+      const response = await axios.post('http://pawhub.space/api/addNewUser', newUser);
+      console.log('API Response:', response.data); // Debug: Log the API response
       return response.data;
     } catch (error) {
       console.error('Failed to post data', error);
@@ -27,101 +48,54 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
-
-
-  const searchUsersReturnUsers = async (query) => {
-    try {
-      const queryString = Object.keys(query)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
-        .join('&');
-  
-      const url = `http://pawhub.space/api/searchUsersReturnUsers?${queryString}`;
-  
-      console.log('API URL:', url); // Debug: Log the API URL being called
-
-
-
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
-
-
-      console.log('API Response:', response); // Debug: Log the API response
-
-  
-      if (!response.ok) {
-        throw new Error('Failed to search data');
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Failed to search data', error);
-      return null;
-    }
-  };
-
   const addUser = async () => {
     const newUser = {
-      "name": name,
-      "username": username,
-      "email": email,
-      "password": password,
-      "profilePicture": "https://example.com/profile.jpg",
-      "friendList": []
+      name: name,
+      username: username,
+      email: email,
+      password: password,
+      profilePicture: 'https://example.com/profile.jpg',
+      friendList: [],
     };
-    let query = { "email": email };
+    let query = { email: email };
     let anyUsers = await searchUsersReturnUsers(query);
-    console.log(anyUsers);
+    console.log('Existing users:', anyUsers); // Debug: Log the existing users found
 
-    if (anyUsers === undefined) {
-      await addNewUser(newUser);
-      setSuccessMessage("Welcome to Pawhub!");
+    if (!anyUsers || anyUsers.length === 0) {
+      try {
+        await addNewUser(newUser);
+        console.log('New user added successfully'); // Debug: Log successful user addition
+        setSuccessMessage('Welcome to Pawhub!');
 
-      await delay(2000);
-      doLogin(email, password, null);
+        await delay(2000);
+        doLogin(email, password, null);
+      } catch (error) {
+        console.error('Error during signup:', error);
+        setErrorMessage('An error occurred during signup.');
+      }
     } else {
-      setErrorMessage("An account already exists with that Email Address");
+      setErrorMessage('An account already exists with that Email Address');
     }
   };
 
-
   const doLogin = async (email, password, setErrorValue) => {
-    let query = { "email": email, "password": password };
-    console.log(query);
-  
+    let query = { email: email, password: password };
+    console.log('Login query:', query); // Debug: Log the login query
+
     let currentUser = await searchUsersReturnUsers(query);
-    if (currentUser === undefined) {
-      console.log("InvalidLogin");
-      setErrorValue("Invalid Email or password");
+    console.log('Current user:', currentUser); // Debug: Log the current user data
+
+    if (!currentUser || currentUser.length === 0) {
+      console.log('InvalidLogin');
+      setErrorValue('Invalid Email or password');
     } else {
-      console.log(currentUser);
-  
+      console.log('Login successful');
       // Store the email and password using AsyncStorage
       await AsyncStorage.setItem('email', email);
       await AsyncStorage.setItem('password', password);
-  
+
       // Replace the current screen with 'MainContainer'
       navigation.replace('MainContainer');
-    }
-  };
-
-
-
-  const handleSignup = () => {
-    // Check if any of the input fields are empty
-    if (name.trim() === '' || email.trim() === '' || username.trim() === '' || password.trim() === '') {
-      setErrorMessage('Please fill in all the fields.');
-    } else if (!isValidEmail(email)) {
-      setErrorMessage('Please enter a valid email address.');
-    } else {
-      // If all fields are filled correctly, proceed with signup
-      addUser();
     }
   };
 
@@ -130,7 +104,6 @@ const SignupScreen = ({ navigation }) => {
     const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
   };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -176,7 +149,7 @@ const SignupScreen = ({ navigation }) => {
         {errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
         {/* Signup Button */}
-        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+        <TouchableOpacity style={styles.signupButton} onPress={addUser}>
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
       </View>

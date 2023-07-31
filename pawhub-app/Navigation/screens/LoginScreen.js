@@ -10,6 +10,9 @@ import {
   Alert,
 } from 'react-native';
 
+import axios from 'axios';
+
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -17,56 +20,25 @@ const LoginScreen = ({ navigation }) => {
   const [errorValue, setErrorValue] = useState('');
 
 
-  const searchUsersReturnUsers = async (query) => {
-    try {
-      const queryString = Object.keys(query)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
-        .join('&');
-  
-      const url = `http://pawhub.space/api/searchUsersReturnUsers?${queryString}`;
-  
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to search data');
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Failed to search data', error);
-      return null;
-    }
-  };
-  
-
   const handleLogin = async () => {
     try {
-      let query = { email, password };
-      console.log(query);
-  
-      let currentUser = await searchUsersReturnUsers(query);
-      console.log('API Response:', currentUser);
+      const response = await axios.get('https://pawhub.space/api/searchUsersReturnUsers', {
+        params: {
+          email: email,
+          password: password,
+        },
+      });
 
+      const currentUser = response.data;
 
-     
-  
-      if (currentUser === null) {
-        console.log('InvalidLogin');
+      if (currentUser === null || currentUser === undefined || Object.keys(currentUser).length === 0) {
         setErrorValue('Invalid Email or password');
       } else {
-        console.log('Login success:', currentUser);
         // Use React Navigation to navigate to the 'MainContainer' screen
+        console.log(currentUser);
         navigation.replace('MainContainer');
       }
     } catch (error) {
-      // Handle any network or other errors
       setErrorValue('Error occurred during login');
       console.error('Error occurred during login:', error);
     }

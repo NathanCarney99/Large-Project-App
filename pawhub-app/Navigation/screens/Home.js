@@ -4,12 +4,7 @@ import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vec
 import NewPost from './NewPost';
 import PostCard from './PostCard';
 
-export default function Home({ navigation }) {
-  const handleSearchUsers = () => {
-    // Handle navigation to the search users screen here
-    // For example, you can use the navigation prop to navigate to the SearchBar component:
-    navigation.navigate('SearchBar');
-  };
+export default function Home() {
 
   return (
     <ScrollView>
