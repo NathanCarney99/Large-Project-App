@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import base64 from 'base64-js';
+import { Buffer } from 'buffer';
 
 
 function PostCard({ postData }) {
   const { text, images, username, date, pfp } = postData;
+  const [imageURI, setImageURI] = useState(null);
+
 
 
   console.log('PostData:', postData);
@@ -14,23 +17,30 @@ function PostCard({ postData }) {
   console.log('Date:', date);
   console.log('PFP:', pfp);
 
-  const base64ToImageURI = (base64Data) => {
-  // Add padding if necessary to make the length a multiple of 4
-  while (base64Data.length % 4 !== 0) {
-    base64Data += '=';
-  }
 
-  const byteArray = base64.toByteArray(base64Data);
-  const imageURI = 'data:image/png;base64,' + base64.fromByteArray(byteArray);
-  return imageURI;
-};
+  useEffect(() => {
+    if (images && images.length > 0) {
+      base64ToImageURI(images[0])
+        .then((uri) => setImageURI(uri))
+        .catch((error) => console.error('Error converting base64 to URI:', error));
+    }
+  }, [images]);
 
-useEffect(() => {
-  // Log the constructed image URI for the first post only
-  if (images && images.length > 0) {
-    console.log('Constructed Image URI (First Post):', base64ToImageURI(images[0]));
-  }
-}, [images]);
+  const base64ToImageURI = async (base64Data) => {
+    try {
+      const response = await fetch(`${base64Data}`);
+      const blob = await response.blob();
+      const uri = URL.createObjectURL(blob);
+      return uri;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
+  console.log('Constructed Image URI :', imageURI);
+
+
 
   return (
     <View style={styles.postCardContainer}>
@@ -50,11 +60,7 @@ useEffect(() => {
 
     
 
-      <View style={styles.imageContainer}>
-        {images && images.length > 0 && (
-          <Image source={{ uri: base64ToImageURI(images[0]) }} style={styles.postCardImage} />
-        )}
-      </View>
+      
     </View>
   );
 }
