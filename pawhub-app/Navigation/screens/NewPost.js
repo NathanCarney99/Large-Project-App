@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation from React Navigation
+
+
 
 function NewPost() {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
-
+  const navigation = useNavigation();
   
 
 
@@ -17,9 +20,10 @@ function NewPost() {
     console.log("Images:", images);
     setText("");
     setImages([]);
+    onPostAdded(); // Call the onPostAdded function passed as a prop to trigger refresh
   };
 const handleImageChange = async () => {
-  const result = await getImageFromGallery(true); // Pass true for allowsMultipleSelection
+  const result = await getImageFromGallery(false); // Pass true for allowsMultipleSelection
   if (!result.cancelled) {
     setImages(result.uris);
   }

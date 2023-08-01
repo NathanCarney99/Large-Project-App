@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Import Expo ImagePicker
+import axios from 'axios'; // Import axios library for API calls
 
-const ProfileCard = ({ navigation }) => {
+const ProfileCard = ({ navigation, user }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -22,6 +23,40 @@ const ProfileCard = ({ navigation }) => {
     // Blur the input fields when clicking outside of them
     Keyboard.dismiss();
   };
+
+ // Function to fetch user data from the API
+ const getUserInfo = async () => {
+  try {
+    // Make an API call to fetch user data based on the email
+    const response = await axios.get('https://pawhub.space/api/searchUsersReturnUsers', {
+      params: {
+        email: 'user@example.com', // Replace with the user's email (if you have a logged-in user, get it from the authentication context or storage)
+      },
+    });
+
+    // Extract the user data from the response and update the state
+    const userVals = response.data;
+    if (userVals && userVals.length > 0) {
+      setEmail(userVals[0].email);
+      setPassword(userVals[0].password);
+      setName(userVals[0].name);
+      setUserName(userVals[0].username);
+
+      const data = userVals[0].profilePicture;
+      if (data !== undefined) {
+        setProfilePicture(data);
+      }
+    }
+  } catch (error) {
+    console.error('Failed to fetch user data', error);
+  }
+};
+
+useEffect(() => {
+  // Fetch user data when the component mounts
+  getUserInfo();
+}, []);
+
 
   const handleLogout = () => {
     // Clear any session data or cookies here

@@ -1,67 +1,63 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import PostPicture from "../images/Meow.jpg";
-import LikeButton from './LikeButton';
-import Example1 from "../images/Meow.jpg"
-import Example2 from "../images/Meow.jpg"
-import Example3 from "../images/Pug.jpg"
-
-function PostCard() {
-    const [editing, setEditing] = useState(false);
-    const [text, setText] = useState("With My best Friend Shaggy! 🐶  🐶#bff");
-    const [images, setImages] = useState([
-        Example1,
-        Example2,
-        Example3
-    ]);
+import React, { useEffect } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import base64 from 'base64-js';
 
 
-    return (
-        <ScrollView contentContainerStyle={styles.postCardContainer}>
-          <View style={styles.postCardInner}>
-            <View style={styles.picture}>
-              <Image source={PostPicture} style={styles.profilePic} />
-            </View>
+function PostCard({ postData }) {
+  const { text, images, username, date, pfp } = postData;
+
+
+  console.log('PostData:', postData);
+  console.log('Text:', text);
+  console.log('Images:', images);
+  console.log('Username:', username);
+  console.log('Date:', date);
+  console.log('PFP:', pfp);
+
+  const base64ToImageURI = (base64Data) => {
+  // Add padding if necessary to make the length a multiple of 4
+  while (base64Data.length % 4 !== 0) {
+    base64Data += '=';
+  }
+
+  const byteArray = base64.toByteArray(base64Data);
+  const imageURI = 'data:image/png;base64,' + base64.fromByteArray(byteArray);
+  return imageURI;
+};
+
+useEffect(() => {
+  // Log the constructed image URI for the first post only
+  if (images && images.length > 0) {
+    console.log('Constructed Image URI (First Post):', base64ToImageURI(images[0]));
+  }
+}, [images]);
+
+  return (
+    <View style={styles.postCardContainer}>
+      <View style={styles.postCardInner}>
+        <View style={styles.picture}>
+          <Image source={{ uri: pfp }} style={styles.profilePic} />
+        </View>
+
+        <View style={styles.postcardFields}>
+          <Text style={styles.postcardFieldsText}>{`${username} · ${date}`}</Text>
+        </View>
+
+        <View style={styles.textContainer}>
+          <Text style={styles.postCardText}>{text}</Text>
+        </View>
+      </View>
+
     
-            <View style={styles.postcardFields}>
-              <Text style={styles.postcardFieldsText}>LiL_PuG · 10/10/2023 *EXAMPLE*</Text>
-            </View>
-    
-            <View style={styles.textContainer}>
-              {editing ? (
-                <View style={styles.postCardTextInputContainer}>
-                  <TextInput
-                    style={styles.postCardText}
-                    value={text}
-                    onChangeText={(value) => setText(value)}
-                    multiline
-                    editable={false} // Set this to false to make it non-editable
-                  />
-                </View>
-              ) : (
-                <View style={styles.postCardTextContainer}>
-                  <Text style={styles.postCardText}>{text}</Text>
-                </View>
-              )}
-    
-              <View style={styles.likeBtn}>
-                <LikeButton />
-              </View>
-            </View>
-    
-            <View style={styles.imageContainer}>
-              {images.map((image, index) => (
-                <Image
-                  key={index}
-                  source={image}
-                  style={styles.postCardImage}
-                />
-              ))}
-            </View>
-          </View>
-        </ScrollView>
-      );
-    }
+
+      <View style={styles.imageContainer}>
+        {images && images.length > 0 && (
+          <Image source={{ uri: base64ToImageURI(images[0]) }} style={styles.postCardImage} />
+        )}
+      </View>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
     postCardContainer: {

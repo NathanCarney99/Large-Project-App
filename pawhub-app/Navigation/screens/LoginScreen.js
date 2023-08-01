@@ -9,6 +9,8 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import axios from 'axios';
 
@@ -28,22 +30,23 @@ const LoginScreen = ({ navigation }) => {
           password: password,
         },
       });
-
+  
       const currentUser = response.data;
-
+  
       if (currentUser === null || currentUser === undefined || Object.keys(currentUser).length === 0) {
         setErrorValue('Invalid Email or password');
       } else {
+        // Save the user's data in AsyncStorage
+        await AsyncStorage.setItem('userData', JSON.stringify(currentUser));
+  
         // Use React Navigation to navigate to the 'MainContainer' screen
-        console.log(currentUser);
-        navigation.replace('MainContainer');
+        navigation.navigate('MainContainer', { user: currentUser });
       }
     } catch (error) {
       setErrorValue('Error occurred during login');
       console.error('Error occurred during login:', error);
     }
   };
-
 
   return (
     <KeyboardAvoidingView

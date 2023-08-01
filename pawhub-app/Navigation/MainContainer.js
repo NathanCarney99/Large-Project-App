@@ -1,73 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vector-icons
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Screens
+
 import Home from './screens/Home';
 import Contact from './screens/Contact';
-import Profile from './screens/Profile';
+import ProfileCard from './screens/Profile'; // Update the path to your actual ProfileCard component file
 import About from './screens/About';
 import LandingPage from './screens/LandingPage';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
-import SearchBar from './screens/SearchBar'; // Import the SearchBar component
+import SearchBar from './screens/SearchBar';
 
-
-// Screen Names
 const homeName = 'Home';
 const contactName = 'Contact';
 const profileName = 'Profile';
-const aboutName = 'About'; // New screen name
+const aboutName = 'About';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const MainContainer = () => {
-  // State to handle the user's authentication status
+  const [userData, setUserData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null); // Store the current user data here
 
-  // Function to handle successful login (you can call this when the user logs in)
-  const handleLogin = () => {
+  
+  useEffect(() => {
+    // Fetch the user's data from AsyncStorage when the component mounts
+    const fetchUserData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('userData');
+        const currentUser = JSON.parse(jsonValue);
+        setUserData(currentUser);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchUserData();
+  }, []);
+
+
+
+  const handleLogin = (user) => {
     setIsLoggedIn(true);
+    setCurrentUser(user); // Store the current user data when logging in
+  
+    // Save the user data to AsyncStorage
+    AsyncStorage.setItem('userData', JSON.stringify(user))
+      .then(() => console.log('User data saved to AsyncStorage'))
+      .catch((error) => console.error('Error saving user data:', error));
   };
 
-  // Function to handle successful logout (you can call this when the user logs out)
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setCurrentUser(null); // Clear the current user data when logging out
+  
+    // Remove the user data from AsyncStorage
+    AsyncStorage.removeItem('userData')
+      .then(() => console.log('User data removed from AsyncStorage'))
+      .catch((error) => console.error('Error removing user data:', error));
   };
+  
 
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor="#025464" />
       <Stack.Navigator>
-        {/* Stack.Screen for LandingPage */}
         <Stack.Screen name="LandingPage" options={{ headerShown: false }}>
           {(props) => <LandingPage {...props} onLogin={handleLogin} navigation={props.navigation} />}
         </Stack.Screen>
-        
-        {/* Stack.Screen for LoginScreen */}
-        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: null, headerShown: true, title: '', headerStyle: {elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0, backgroundColor: '#025464' }, headerTintColor: 'white' }} />
-        {/* Stack.Screen for SignupScreen */}
-        <Stack.Screen name="SignupScreen" component={SignupScreen} options={{ headerTitle: null, headerShown: true, title: '', headerStyle: {elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0, backgroundColor: '#025464' }, headerTintColor: 'white' }} />
 
-        {/* Stack.Screen for the bottom tab navigator */}
-        <Stack.Screen
-          name="MainContainer"
-          options={{
-            headerShown: false,
-            headerStyle: {
-              backgroundColor: '#025464', // Set the header background color to blue
-            },
-            headerTintColor: 'white', // Set the header text color to white
-          }}
-        >
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: null, headerShown: true, title: '', headerStyle: { elevation: 0, shadowOpacity: 0, borderBottomWidth: 0, backgroundColor: '#025464' }, headerTintColor: 'white' }} />
+
+        <Stack.Screen name="SignupScreen" component={SignupScreen} options={{ headerTitle: null, headerShown: true, title: '', headerStyle: { elevation: 0, shadowOpacity: 0, borderBottomWidth: 0, backgroundColor: '#025464' }, headerTintColor: 'white' }} />
+
+        <Stack.Screen name="MainContainer" options={{ headerShown: false, headerStyle: { backgroundColor: '#025464' }, headerTintColor: 'white' }}>
           {() => (
             <Tab.Navigator
               initialRouteName={homeName}
@@ -86,98 +99,74 @@ const MainContainer = () => {
                   }
 
                   return (
+                    <Ionicons name={iconName} color={focused ? '#e57c23' : 'white'} size={size} style={{ paddingTop: 8 }} />
+                  );
+                },
+                tabBarStyle: { elevation: 0, shadowOpacity: 0, borderBottomWidth: 0, backgroundColor: '#025464' },
+                tabBarLabelStyle: { fontSize: 13, fontWeight: 'bold', color: '#fff', paddingTop: 0, marginTop: 3 },
+              })}
+            >
+             <Tab.Screen
+                name={homeName}
+                component={props => <Home {...props} user={currentUser} />}
+                options={{
+                  headerShown: true,
+                  headerStyle: { backgroundColor: '#025464', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 },
+                  headerTintColor: 'white',
+                }}
+              />
+
+<Tab.Screen
+  name={profileName}
+  options={{
+    headerShown: true,
+    headerStyle: { backgroundColor: '#025464', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 },
+    headerTintColor: 'white',
+  }}
+>
+  {(props) => (
+    <ProfileCard {...props} route={props.route} navigation={props.navigation} user={currentUser} />
+  )}
+</Tab.Screen>
+
+              <Tab.Screen
+                name="SearchBar"
+                component={SearchBar}
+                options={{
+                  tabBarLabel: 'Search',
+                  tabBarIcon: ({ focused, color, size }) => (
                     <Ionicons
-                      name={iconName}
+                      name={focused ? 'search' : 'search-outline'}
                       color={focused ? '#e57c23' : 'white'}
                       size={size}
                       style={{ paddingTop: 8 }}
                     />
-                  );
-                },
-                tabBarStyle: { elevation: 0,
-      shadowOpacity: 0,
-      borderBottomWidth: 0,
-      backgroundColor: '#025464', },
-                tabBarLabelStyle: {
-                  fontSize: 13,
-                  fontWeight: 'bold',
-                  color: '#fff',
-                  paddingTop: 0,
-                  marginTop: 3,
-                },
-              })}
-            >
-              {/* Individual Tab Screens */}
+                  ),
+                  headerShown: true,
+                  headerStyle: { backgroundColor: '#025464', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 },
+                  headerTintColor: 'white',
+                }}
+              />
+
               <Tab.Screen
-  name={homeName}
-  component={Home}
-  options={{
-    headerShown: true,
-    headerStyle: {backgroundColor: '#025464', elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0  },
-    headerTintColor: 'white', // Set the header title color to white
-  }}
-/>
+                name={contactName}
+                component={Contact}
+                options={{
+                  headerShown: true,
+                  headerStyle: { backgroundColor: '#025464', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 },
+                  headerTintColor: 'white',
+                }}
+              />
 
-<Tab.Screen
-  name={profileName}
-  component={Profile}
-  options={{
-    headerShown: true,
-    headerStyle: { backgroundColor: '#025464', elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0  },
-    headerTintColor: 'white', // Set the header title color to white
-  }}
-/>
-
-
-<Tab.Screen
-  name="SearchBar"
-  component={SearchBar}
-  options={{
-    tabBarLabel: 'Search', // Set the label for the tab
-    tabBarIcon: ({ focused, color, size }) => (
-      // Use the Ionicons component to display the search icon
-      <Ionicons
-        name={focused ? 'search' : 'search-outline'}
-        color={focused ? '#e57c23' : 'white'}
-        size={size}
-        style={{ paddingTop: 8 }}
-      />
-    ),
-    headerShown: true,
-    headerStyle: { backgroundColor: '#025464', elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0  },
-    headerTintColor: 'white', // Set the header title color to white
-  }}
-/>
-
-<Tab.Screen
-  name={contactName}
-  component={Contact}
-  options={{
-    headerShown: true,
-    headerStyle: { backgroundColor: '#025464', elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0  },
-    headerTintColor: 'white', // Set the header title color to white
-  }}
-/>
-
-<Tab.Screen
-  name={aboutName}
-  component={About}
-  options={{
-    headerShown: true,
-    headerStyle: { backgroundColor: '#025464', elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0   },
-    headerTintColor: 'white', // Set the header title color to white
-  }}
-/>
+              <Tab.Screen
+                name={aboutName}
+                component={About}
+                options={{
+                  headerShown: true,
+                  headerStyle: { backgroundColor: '#025464', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 },
+                  headerTintColor: 'white',
+                }}
+              />
             </Tab.Navigator>
           )}
         </Stack.Screen>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook from React Navigation
+
 
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -48,6 +50,28 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
+
+  const doLogin = async (email, password, setErrorValue) => {
+    let query = { email: email, password: password };
+    console.log('Login query:', query); // Debug: Log the login query
+
+    let currentUser = await searchUsersReturnUsers(query);
+    console.log('Current user:', currentUser); // Debug: Log the current user data
+
+    if (!currentUser || currentUser.length === 0) {
+      console.log('InvalidLogin');
+      setErrorValue('Invalid Email or password');
+    } else {
+      console.log('Login successful');
+      // Store the email and password using AsyncStorage
+      await AsyncStorage.setItem('email', email);
+      await AsyncStorage.setItem('password', password);
+
+      // Replace the current screen with 'MainContainer'
+      navigation.replace('MainContainer');
+    }
+  };
+
   const addUser = async () => {
     const newUser = {
       name: name,
@@ -78,26 +102,7 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
-  const doLogin = async (email, password, setErrorValue) => {
-    let query = { email: email, password: password };
-    console.log('Login query:', query); // Debug: Log the login query
-
-    let currentUser = await searchUsersReturnUsers(query);
-    console.log('Current user:', currentUser); // Debug: Log the current user data
-
-    if (!currentUser || currentUser.length === 0) {
-      console.log('InvalidLogin');
-      setErrorValue('Invalid Email or password');
-    } else {
-      console.log('Login successful');
-      // Store the email and password using AsyncStorage
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('password', password);
-
-      // Replace the current screen with 'MainContainer'
-      navigation.replace('MainContainer');
-    }
-  };
+ 
 
   const isValidEmail = (email) => {
     // Simple email validation using regular expression
