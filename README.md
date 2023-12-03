@@ -67,14 +67,14 @@ Welcome to PawHub, the mobile app version of our full-stack social media project
 
 To deploy PawHub App using Expo:
 
-1. In![IMG_0741](https://github.com/rundex0/Large-Project-App/assets/69157728/14150650-c9d3-4e07-9a20-a44214e34249)
-stall the Expo Client on your mobile device.
+1. Install the Expo Client on your mobile device.
 2. Create an Expo account and log in.
 3. Run `expo publish` to publish your app to Expo's servers.
 4. Users can then access the app by scanning the QR code with the Expo Client.
 
 
 Happy pet sharing on PawHub App! 🐾
+![IMG_0741](https://github.com/rundex0/Large-Project-App/assets/69157728/14150650-c9d3-4e07-9a20-a44214e34249)
 ![IMG_0740](https://github.com/rundex0/Large-Project-App/assets/69157728/dfd412b0-2e38-4a10-9623-3068268acedf)
 ![IMG_0739](https://github.com/rundex0/Large-Project-App/assets/69157728/4f9ce612-075a-4651-b9f3-62db69ad7fd2)
 ![IMG_0738](https://github.com/rundex0/Large-Project-App/assets/69157728/d2637bdc-ae50-465d-8e14-5133252b1145)
